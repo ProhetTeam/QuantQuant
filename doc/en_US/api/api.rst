@@ -6,22 +6,22 @@ Part1: QuantTransforer API
 
 APOT
 ^^^^^^^^^^
-.. automodule:: mtransformer.APOT
+.. automodule:: QuanTransformer.quantrans.quantops.APOT
     :members:
 
 DSQ
 ^^^^^^^^^^
-.. automodule:: mtransformer.APOT
+.. automodule:: QuanTransformer.quantrans.quantops.APOT
     :members:
 
 LSQ
 ^^^^^^^^^^
-.. automodule:: mtransformer.LSQ
+.. automodule:: QuanTransformer.quantrans.quantops.LSQ
     :members:
 
 LSQPLUS
 ^^^^^^^^^^
-.. automodule:: mtransformer.LSQPLUS
+.. automodule:: QuanTransformer.quantrans.quantops.LSQPlus
     :members:
 
 Part2: Quant Convert API
@@ -29,7 +29,10 @@ Part2: Quant Convert API
 
 Transformer
 ^^^^^^^^^^
-.. automodule:: mtransformer
+.. automodule:: QuanTransformer.quantrans.QuanTransformerV1
+    :members:
+
+.. automodule:: QuanTransformer.quantrans.QuanTransformerV2
     :members:
 
 Part3: Model Analysis API
@@ -37,13 +40,9 @@ Part3: Model Analysis API
 
 anchor
 ^^^^^^^^^^
-.. automodule:: ../../mmdetection/mmdet.core.anchor
+.. automodule:: QuantMmdetection/mmdet.core.anchor
     :members:
 
 Part4: Useful Tool API
 --------------
 
-anchor
-^^^^^^^^^^
-.. automodule:: mmdet.core.anchor
-    :members:
