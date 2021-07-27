@@ -4,3 +4,7 @@ sphinx-rtd-theme
 sphinx_markdown_tables
 sphinx_markdown_builder
 recommonmark
+
+numpy
+scipy
+https://download.pytorch.org/whl/cpu/torch-1.7.1%2Bcpu-cp37-cp37m-linux_x86_64.whl
