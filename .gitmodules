@@ -7,3 +7,6 @@
 [submodule "ModelAnalysisTools"]
 	path = ModelAnalysisTools
 	url = https://github.com/flyingTan/ModelAnalysisTools.git
+[submodule "QuanTransformer"]
+	path = QuanTransformer
+	url = https://github.com/flyingTan/QuanTransformer.git
