@@ -1,5 +1,4 @@
 ### Welcome to QuantQuant
-[toc]
 
  &nbsp; &nbsp;**Quant_Quant** (QQ for short) is a lightweight but powerful codebase for quantization aware training(QAT). In this codebase, wo have covered both detection and classification tasks. The codebase integrate majority of  QAT methods.
 ## Key Features & Capabilty
@@ -54,14 +53,14 @@ What’s more,  we have support to quantize on both classfication and detection 
 
  
 ## The Structure of QQ 
-
+```
 ├── ModelAnalysisTools
 ├── QuanTransformer
 ├── QuantMmdetection
 ├── lowbit_classification
 ├── requirements.txt
 └── README.md
-
+```
 
 
 
