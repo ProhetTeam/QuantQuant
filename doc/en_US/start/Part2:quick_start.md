@@ -1,4 +1,4 @@
-# Quick Start on Detection  Quantization Task
+# 1. Quick Start on Detection  Quantization Task
  
 ## Train a quantized detection model
 you can quickly start a training with  one GPU by simply run comand below.
@@ -21,7 +21,7 @@ python tools/test.py /data/code/4krjf_data/4k_json_coco/mmdetection/work_dirs/co
 When need to a more detailed usage, you can reference TuXXXXX
 
 
-# Quick Start on Classification Task
+# 2. Quick Start on Classification Task
  
 ## Train a quantized classification model
 you can quickly start a training with one GPU by simply run comand below.
