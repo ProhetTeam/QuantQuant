@@ -19,3 +19,26 @@ python tools/test.py /data/code/4krjf_data/4k_json_coco/mmdetection/work_dirs/co
 
 
 When need to a more detailed usage, you can reference TuXXXXX
+
+
+# Quick Start on Classification Task
+ 
+## Train a quantized classification model
+you can quickly start a training with one GPU by simply run comand below.
+
+```bash
+python tools/train.py  thirdparty/configs/DSQ/res50/config2_res50_dsq_m1_16_2w2f.py
+```
+
+
+
+## Test and Inference
+
+you can quickly start a test or inference  by simply run comand below.
+
+```
+xxxxx
+```
+
+
+When need to a more detailed usage, you can reference TuXXXXX
