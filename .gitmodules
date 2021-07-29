@@ -1,0 +1,12 @@
+[submodule "QuanTransformer"]
+	path = QuanTransformer
+	url = https://github.com/ProhetTeam/QuanTransformer.git
+[submodule "ModelAnalysisTools"]
+	path = ModelAnalysisTools
+	url = https://github.com/ProhetTeam/ModelAnalysisTools.git
+[submodule "QuantMmdetection"]
+	path = QuantMmdetection
+	url = https://github.com/ProhetTeam/QuantMmdetection.git
+[submodule "lowbit_classification"]
+	path = lowbit_classification
+	url = https://github.com/ProhetTeam/lowbit_classification.git
