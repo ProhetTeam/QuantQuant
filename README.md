@@ -70,8 +70,7 @@ What’s more,  we have support to quantize on both classfication and detection 
 - **lowbit_classification:** In classification module, wo have completed lots of classification backbone in it, which totally satisty the purpose on both academical research  and industry deploy. 
 - **QuantMmdetection:**  Nowadays,  the quantization in detection ares has gained more and more attention. But, there still has little paper studied in this problem.  Consistering detection is a significant part of computer vision, we want to construct a baseline for this problem. What’s more, we also want to attract more on this problem. 
 
-![](http://s3-x.mcd.megvii-inc.com/mcd-codimd/uploads/upload_a1aa9cd8ad8e88ec896de5fcb0a77a51.png)
-
+![image](https://user-images.githubusercontent.com/31733191/127477981-8cec4ef4-fec1-476c-8474-a1f5fe16135f.png)
 
 ## Installation  Documentation
 
