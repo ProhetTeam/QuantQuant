@@ -71,7 +71,7 @@ What’s more,  we have support to quantize on both classfication and detection 
 - **QuantMmdetection:**  Nowadays,  the quantization in detection ares has gained more and more attention. But, there still has little paper studied in this problem.  Consistering detection is a significant part of computer vision, we want to construct a baseline for this problem. What’s more, we also want to attract more on this problem. 
 
 ![image](https://user-images.githubusercontent.com/31733191/127477981-8cec4ef4-fec1-476c-8474-a1f5fe16135f.png)
-<img src="https://user-images.githubusercontent.com/31733191/127477981-8cec4ef4-fec1-476c-8474-a1f5fe16135f.png" width="500" height="500" alt="微信小程序"/><br/>
+<img src="https://user-images.githubusercontent.com/31733191/127477981-8cec4ef4-fec1-476c-8474-a1f5fe16135f.png" width="500" height="300" alt="微信小程序"/><br/>
 
 ## Installation  Documentation
 
