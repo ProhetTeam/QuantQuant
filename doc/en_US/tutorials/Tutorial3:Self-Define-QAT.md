@@ -1,144 +1,128 @@
-# Tutorial 3: Self-Define Quant Operator 
+## __Turorial 3 : Self-Define Quant Transformer__
 
-## Design of Data pipelines
+To customize a new QAT approach, there are the following steps:
 
-Following typical conventions, we use `Dataset` and `DataLoader` for data loading
-with multiple workers. Indexing `Dataset` returns a dict of data items corresponding to
-the arguments of models forward method.
+-  Define a new quantization class
+-  Import the module
+-  Modify the quantization setting in config file
 
-The data preparation pipeline and the dataset is decomposed. Usually a dataset
-defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict.
-A pipeline consists of a sequence of operations. Each operation takes a dict as input and also output a dict for the next transform.
+### __Define a new quantization class__
 
-The operations are categorized into data loading, pre-processing and formatting.
+Suppose we want to devolop a new quantization method DSQv2. First, create a new folder ```DSQv2``` under ```QuanTransformer/quantrans/quantops'```, and create a new file ```QuanTransformer/quantrans/quantops/DSQv2/DSQConvV2.py'```.
 
-Here is an pipeline example for ResNet-50 training on ImageNet.
 
 ```python
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
-train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='RandomResizedCrop', size=224),
-    dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='ToTensor', keys=['gt_label']),
-    dict(type='Collect', keys=['img', 'gt_label'])
-]
-test_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='Resize', size=256),
-    dict(type='CenterCrop', crop_size=224),
-    dict(type='Normalize', **img_norm_cfg),
-    dict(type='ImageToTensor', keys=['img']),
-    dict(type='Collect', keys=['img'])
-]
-```
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from ..builder import QUANLAYERS
 
-For each operation, we list the related dict fields that are added/updated/removed.
-At the end of the pipeline, we use `Collect` to only retain the necessary items for forward computation.
+@QUANLAYERS.register_module()
+class DSQConvV2(nn.Conv2d):
+    def __init__(self, *args):
 
-### Data loading
+    def quantize_(self, x, *args):
+        pass
 
-`LoadImageFromFile`
-
-- add: img, img_shape, ori_shape
-
-By default, `LoadImageFromFile` loads images from disk but it may lead to IO bottleneck for efficient small models.
-Various backends are supported by mmcv to accelerate this process. For example, if the training machines have setup
-[memcached](https://memcached.org/), we can revise the config as follows.
+    def forward(self, x):
+        pass
 
 ```
-memcached_root = '/mnt/xxx/memcached_client/'
-train_pipeline = [
-    dict(
-        type='LoadImageFromFile',
-        file_client_args=dict(
-            backend='memcached',
-            server_list_cfg=osp.join(memcached_root, 'server_list.conf'),
-            client_cfg=osp.join(memcached_root, 'client.conf'))),
-]
+
+Note that after defining the class, we add a decorator function: 
+```@QUANLAYERS.register_module()```.
+Then,  we import this module in ```QuanTransformer/quantrans/quantops/DSQv2/__init__.py'```: 
+
+
+```python
+from .DSQConvV2 import DSQConvV2
+
+__all__=['DSQConvV2']
 ```
 
-More supported backends can be found in [mmcv.fileio.FileClient](https://github.com/open-mmlab/mmcv/blob/master/mmcv/fileio/file_client.py).
+this process is equivalent to excuting  ```DSQConvV2 = QUANLAYERS.register_module(DSQConvV2()) ```.
 
-### Pre-processing
+### __Modify the quantization setting in config file__
 
-`Resize`
+```python
+quant_transformer = dict(
+    type = "mTransformerV2",
+    quan_policy=dict(
+        Conv2d=dict(type='DSQConvV2', num_bit_w=3, num_bit_a=3, bSetQ=True),
+        ),
+    special_layers = dict(
+        layers_name = [
+            'backbone.conv1',
+            'head.fc'],
+        convert_type = [dict(type='DSQConv', num_bit_w=8, num_bit_a=8, bSetQ=True, quant_activation=False),
+                        dict(type='DSQLinear', num_bit_w=8, num_bit_a=8)]
+        )
+)
+```
 
-- add: scale, scale_idx, pad_shape, scale_factor, keep_ratio
-- update: img, img_shape
 
-`RandomFlip`
+### __How the new modules are used to quantify the model__
 
-- add: flip, flip_direction
-- update: img
+Using quantization setting as a argument, we define a model transformer:
+```python
+model_transformer = build_mtransformer(cfg.quant_transformer)
+```
 
-`RandomCrop`
+In ```__init__``` function, the dict of quantization setting is assigned to ```self.register_dict```:
+```python
+class mTransformerV2(Basemtransformer, nn.Module):
+    def __init__(self, 
+                 quan_policy = dict(),
+                 special_layers = None,
+                 **kwargs):
+        super(mTransformerV2, self).__init__()
+        self.special_layers = special_layers
 
-- update: img, pad_shape
+        self.register_dict = OrderedDict()
+        for key, value in quan_policy.items():
+            assert(hasattr(nn, key))
+            self.register_dict[getattr(nn, key)] = value
+        self.layer_idx = 0
+```
 
-`Normalize`
+Then, the transformer convert a standard model into a quantization model:
 
-- add: img_norm_cfg
-- update: img
+```python
+model = model_transformer(model, logger = logger)
+```
 
-### Formatting
+For each module, the transformer first gets the name and check whether it exists in ```self.register_dict```:
 
-`ToTensor`
+```python
+if type(current_layer) not in self.register_dict:
+    continue
+```
 
-- update: specified by `keys`.
+If the current layer can be converted, first extract the parameters of the original layer ```new_kwargs```, 
 
-`ImageToTensor`
+```python
+## 1. get parameters
+sig = inspect.signature(type(getattr(model, module_name)))
+new_kwargs = {}
+for key in sig.parameters:
+    if sig.parameters[key].default != inspect.Parameter.empty:
+        continue
+    assert(hasattr(current_layer, key))
+    new_kwargs[key] = getattr(current_layer, key)
+```
 
-- update: specified by `keys`.
+and get the corresponding quantization arguments ```quan_args``` according to the layer name.
+These arguments are combined to build a new quant layer. The weights of current layer is merged to quant layer, so the quant layer can use it for operations like convolution. Finally, the quantization layer replaces the current layer in the model.
 
-`Collect`
-
-- remove: all other keys except for those specified by `keys`
-
-## Extend and use custom pipelines
-
-1. Write a new pipeline in any file, e.g., `my_pipeline.py`, and place it in
-   the folder `mmcls/datasets/pipelines/`. The pipeline class needs to override
-   the `__call__` method which takes a dict as input and returns a dict.
-
-    ```python
-    from mmcls.datasets import PIPELINES
-
-    @PIPELINES.register_module()
-    class MyTransform(object):
-
-        def __call__(self, results):
-            # apply transforms on results['img']
-            return results
-    ```
-
-2. Import the new class in `mmcls/datasets/pipelines/__init__.py`.
-
-    ```python
-    ...
-    from .my_pipeline import MyTransform
-
-    __all__ = [
-        ..., 'MyTransform'
-    ]
-    ```
-
-3. Use it in config files.
-
-    ```python
-    img_norm_cfg = dict(
-        mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
-    train_pipeline = [
-        dict(type='LoadImageFromFile'),
-        dict(type='RandomResizedCrop', size=224),
-        dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
-        dict(type='MyTransform'),
-        dict(type='Normalize', **img_norm_cfg),
-        dict(type='ImageToTensor', keys=['img']),
-        dict(type='ToTensor', keys=['gt_label']),
-        dict(type='Collect', keys=['img', 'gt_label'])
-    ]
-    ```
+```python
+## 2. Special layers or Normal layer
+if current_layer_name in self.special_layers.layers_name:
+    idx = self.special_layers.layers_name.index(current_layer_name)
+    quan_args = self.special_layers.convert_type[idx]
+else:
+    quan_args = self.register_dict[type(current_layer)]
+    new_kwargs = {**quan_args, **new_kwargs}
+    new_quan_layer = build_quanlayer(new_kwargs)
+    dict_merge(new_quan_layer.__dict__, current_layer.__dict__)
+    setattr(model, module_name, new_quan_layer)
+```
