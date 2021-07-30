@@ -62,8 +62,8 @@ What’s more,  we have support to quantize on both classfication and detection 
 └── README.md
 ```
 
-```**QuantQuant:**``` is origanized as shown above.  As shown, QuanTransformer is the most important part, in which we define the quantization methods and how to convert the  float operators to the quantized one. Classfication and detection are implemented sperataly.
-- ```**ModelAnalysisTools:**``` intergerate a set of model analysis tools to analysis model performance.
+```QuantQuant:``` is origanized as shown above.  As shown, QuanTransformer is the most important part, in which we define the quantization methods and how to convert the  float operators to the quantized one. Classfication and detection are implemented sperataly.
+- ```ModelAnalysisTools:``` intergerate a set of model analysis tools to analysis model performance.
 - ```QuanTransformer``` complete QAT algorithm cited most, including uniform, lsq, dsq, dorefa, apot. And we will keep abreast of developments in this area and update our code continuously.
 - ```lowbit_classification:``` In classification module, wo have completed lots of classification backbone in it, which totally satisty the purpose on both academical research  and industry deploy. 
 - ```QuantMmdetection:```  Nowadays,  the quantization in detection ares has gained more and more attention. But, there still has little paper studied in this problem.  Consistering detection is a significant part of computer vision, we want to construct a baseline for this problem. What’s more, we also want to attract more on this problem. 
