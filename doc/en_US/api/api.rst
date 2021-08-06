@@ -9,9 +9,14 @@ APOT
 .. automodule:: QuanTransformer.quantrans.quantops.APOT
     :members:
 
+DoReFa
+^^^^^^^^^^
+.. automodule:: QuanTransformer.quantrans.quantops.DOREFA
+    :members:
+
 DSQ
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.APOT
+.. automodule:: QuanTransformer.quantrans.quantops.DSQ
     :members:
 
 LSQ
@@ -32,15 +37,12 @@ Transformer
 .. automodule:: QuanTransformer.quantrans.QuanTransformerV1
     :members:
 
-.. automodule:: QuanTransformer.quantrans.QuanTransformerV2
-    :members:
-
 Part3: Model Analysis API
 --------------
 
 anchor
 ^^^^^^^^^^
-.. automodule:: QuantMmdetection/mmdet.core.anchor
+.. automodule:: QuantMmdetection.mmdet.core.anchor
     :members:
 
 Part4: Useful Tool API
