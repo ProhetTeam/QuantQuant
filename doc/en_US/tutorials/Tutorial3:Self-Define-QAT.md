@@ -126,3 +126,5 @@ else:
     dict_merge(new_quan_layer.__dict__, current_layer.__dict__)
     setattr(model, module_name, new_quan_layer)
 ```
+
+ For the complete source, please refer [MMClassification_Tutorial.ipynb](MMClassification_Tutorial.ipynb).

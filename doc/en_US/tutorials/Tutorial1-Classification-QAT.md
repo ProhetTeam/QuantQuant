@@ -194,36 +194,6 @@ model = dict(
 ```
 
 
-#### __Dataset Setting__ 
-```python=
-dataset_type = 'ImageNetV1'  # Type of dataset
-img_norm_cfg = dict(  # Image Normalization config
-    mean=[0.485, 0.456, 0.406],  # Mean values used to normalize the images
-    std=[0.229, 0.224, 0.225],  # Standard variance used to normalize the images
-    to_rgb=True)  #  Whether to adjust the channel orders to rgb orders
-train_pipeline = [  # Training pipline
-    dict(type='LoadImageFromNori'),  # Type of load images
-    dict(type='RandomResizedCrop', size=224),  # Augmentation pipeline that crop the images
-    dict(type='RandomFlip',  # Augmentation pipeline that flip the images randomly
-    flip_prob=0.5,  # Probability to perform a flip operation
-    direction='horizontal'),  # Flip direction
-    dict(type='Normalize',  # Augmentation pipeline that normalize the images
-    **img_norm_cfg),  # Normalization parameters are read from img_norm_cfg
-    dict(type='ImageToTensor', keys=['img']),  # Convert image to tensor
-    dict(type='ToTensor', keys=['gt_label']),  # Convert label to tensor
-    dict(type='Collect', keys=['img', 'gt_label'])  # Collect pipeline that collect necessary keys
-]
-test_pipeline = [  # Test pipline
-    dict(type='LoadImageFromNori'),  # Type of load images
-    dict(type='Resize', size=(256, -1)),  # Augmentation pipeline that resize the images
-    dict(type='CenterCrop', crop_size=224),  # Augmentation pipeline that crop the images
-    dict(type='Normalize',  # Augmentation pipeline that normalize the images
-    **img_norm_cfg),  # Normalization parameters are read from img_norm_cfg
-    dict(type='ImageToTensor', keys=['img']),  # Convert image to tensor
-    dict(type='Collect', keys=['img'])  # Collect pipeline that collect necessary keys
-]
-```
-
 #### __Quantization Setting__
 ```python=
 quant_transformer = dict(  
@@ -320,3 +290,5 @@ python tools/model_analysis_tool.py \
     gpu:0 \
     ./model_analysis.html
 ```
+
+ For the complete source, please refer [MMClassification_Tutorial.ipynb](MMClassification_Tutorial.ipynb).
