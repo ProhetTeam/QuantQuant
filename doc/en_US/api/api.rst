@@ -6,22 +6,22 @@ Part1: QuantTransforer API
 
 APOT
 ^^^^^^^^^^
-.. automodule:: ../../../QuanTransformer.quantrans.quantops.APOT
+.. automodule:: ../QuanTransformer.quantrans.quantops.APOT
     :members:
 
 DoReFa
 ^^^^^^^^^^
-.. automodule:: ../../../QuanTransformer.quantrans.quantops.DOREFA
+.. automodule:: QuanTransformer.quantrans.quantops.DOREFA
     :members:
 
 DSQ
 ^^^^^^^^^^
-.. automodule:: ../../../QuanTransformer.quantrans.quantops.DSQ
+.. automodule::QuanTransformer.quantrans.quantops.DSQ
     :members:
 
 LSQ
 ^^^^^^^^^^
-.. automodule:: ../../../QuanTransformer.quantrans.quantops.LSQ
+.. automodule:: QuanTransformer.quantrans.quantops.LSQ
     :members:
 
 LSQPLUS
