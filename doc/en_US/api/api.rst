@@ -6,27 +6,27 @@ Part1: QuantTransforer API
 
 APOT
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.APOT
+.. automodule:: ../../../QuanTransformer.quantrans.quantops.APOT
     :members:
 
 DoReFa
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.DOREFA
+.. automodule:: ../../../QuanTransformer.quantrans.quantops.DOREFA
     :members:
 
 DSQ
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.DSQ
+.. automodule:: ../../../QuanTransformer.quantrans.quantops.DSQ
     :members:
 
 LSQ
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.LSQ
+.. automodule:: ../../../QuanTransformer.quantrans.quantops.LSQ
     :members:
 
 LSQPLUS
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.LSQPlus
+.. automodule:: ../../../QuanTransformer.quantrans.quantops.LSQPlus
     :members:
 
 Part2: Quant Convert API
@@ -34,7 +34,7 @@ Part2: Quant Convert API
 
 Transformer
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.QuanTransformerV1
+.. automodule:: ../../../QuanTransformer.quantrans.QuanTransformer
     :members:
 
 Part3: Model Analysis API
@@ -42,7 +42,7 @@ Part3: Model Analysis API
 
 anchor
 ^^^^^^^^^^
-.. automodule:: QuantMmdetection.mmdet.core.anchor
+.. automodule:: ../../../QuantMmdetection.mmdet.core.anchor
     :members:
 
 Part4: Useful Tool API

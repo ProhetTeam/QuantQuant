@@ -52,7 +52,7 @@ This section introduces how to convert a floating-point model to a quantization 
 The configuration file determines all arguments related to the experiment, including model structure, dataset, quantization method, etc. These arguments are modularized so that we can customize them respectively.
 
 
-```python=
+```python
 import mmcv
 from lbitcls import __version__
 config = 'config.py'
@@ -65,7 +65,7 @@ config = mmcv.Config.fromfile(config)
 Building a network from scratch is usually a tedious process because it consists of several nested layers/modules. When quantifying an existing model, we will not repeat above steps. QQuant provides model transformer which recursively traverse the network structure and replace them with specified quantization layers. In addition to directly using the existing quantification methods, we could also modify them, or customize a new one.
 
 
-```python=
+```python
 from thirdparty.mtransformer import build_mtransformer
 from mmcv.runner import load_checkpoint
 import warnings
@@ -101,7 +101,7 @@ model.eval()
 
 Before the data is fed to the network, a pipeline of pre-processing like cropping and normalization are required. These operations are recorded in the configuration file as a dict. In some cases, we may only want to use a single image for debugging instead of the entire dataset. The data pipeline and dataset loader are decoupled for better modularity.
 
-```python=
+```python
 from lbitcls.datasets.pipelines import Compose
 from mmcv.parallel import collate, scatter
 import numpy as np
@@ -125,7 +125,7 @@ if next(model.parameters()).is_cuda:
 
 Regardless of whether the model is quantified or not, the process of inference on images is unchanged, as same as other standard operation.
 
-```python=
+```python
 with torch.no_grad():
     scores = model(return_loss=False, **data)
     pred_score = np.max(scores, axis=1)[0]
@@ -155,11 +155,11 @@ Next, we will establish a preliminary understanding about config file by reading
 
 #### __Config Name__
 
-The file path is: ```"lowbit_classification/thirdparty/cls_quant_config/DSQ/res50/config2_res50_dsq_m1_16_2w2f.py"```.
+The file path is: ```"./lowbit_classification/thirdparty/cls_quant_config/DSQ/res50/config2_res50_dsq_m1_16_2w2f.py"```.
 The directory where the config file is located has a two-level structure, the first level is named by QAT method, and the second layer is named by backbone. The name of config file is determined by a naming rules:
 
-```shell=
-config(number)_res18(backbone)_UQ(qat_method)_m4(machine number)_64(sample_per_gpu)_2w2f(quant_bit).py
+```shell
+config(number)_res50(backbone)_DSQ(qat_method)_m1(machine number)_16(sample_per_gpu)_2w2f(quant_bit).py
 ```
 
   - ```(number)```: experiment number.
@@ -174,7 +174,7 @@ We selectively give components that may be frequently modified in the configurat
 
 #### __Model Structure__
 
-```python=
+```python
 model = dict(
     type='ImageClassifier',  # Type of classifier
     backbone=dict(
@@ -195,7 +195,7 @@ model = dict(
 
 
 #### __Quantization Setting__
-```python=
+```python
 quant_transformer = dict(  
     type = "mTransformerV2",  # Type of quantization transformer 
     quan_policy=dict(  
@@ -221,26 +221,13 @@ quant_transformer = dict(
 ```
 
 #### __Optimizer__
-```python=
+```python
 num_nodes = 1  # Number of machine
 optimizer = dict(type='SGD',  # Type of optimizers
     lr=0.001 * num_nodes,  # Learning rate of optimizers
     momentum=0.9,  # Momentum
     weight_decay=0.0001)  # Weight decay 
 optimizer_config = dict(grad_clip=None)  # Config used to build the optimizer hook
-```
-
-#### __Others__
-```python=
-checkpoint_config = dict(interval=2)  # The interval of checkpoint saving
-dist_params = dict(backend='nccl')  # Parameters to setup distributed training
-work_dir = '/data/workspace/lowbit_classification/workdirs/DSQ/res50/config2_res50_dsq_m1_16_2w2f'  # Directory to save the model checkpoints and relevant logs
-workflow = [('train', 1)]  # Workflow for runner. Format of workflow: [(mode1, epochs), (mode2, epochs), ...].
-load_from = './thirdparty/modelzoo/res50.pth'  # load models as a pre-trained model from a given path.  This will not resume training.
-resume_from = None  # Resume checkpoints from a given path, the training will be resumed from the epoch when the checkpoint's is saved.
-cpu_only=False  # Whether to run only on cpu
-find_unused_parameters = True  # Whether to find unused parameters
-sycbn = False # Whether to do synchronization of BN statistics
 ```
 
 ### __Train and test quantization model__
@@ -254,10 +241,10 @@ python tools/train.py  thirdparty/configs/DSQ/res50/config2_res50_dsq_m1_16_2w2f
 
 Next, the program will output log information with the following format, which can be viewed under ```work_dir``` directory.
 
-```shell=
+```shell
 2021-07-21 21:21:52,381 - lbitcls - INFO - load checkpoint from /thirdparty/modelzoo/res50.pth
 2021-07-21 21:21:52,382 - lbitcls - INFO - Use load_from_local loader
-2021-07-21 21:21:52,959 - lbitcls - INFO - Start running, host: ***, work_dir: /data/workspace/lowbit_classification/workdirs/DSQ/res18/config5_res18_dsq_m2_128_4w4f
+2021-07-21 21:21:52,959 - lbitcls - INFO - Start running, host: ***, work_dir: /data/workspace/lowbit_classification/workdirs/DSQ/res18/config2_res50_dsq_m1_16_2w2f
 2021-07-21 21:21:52,959 - lbitcls - INFO - workflow: [('train', 1)], max: 100 epochs
 2021-07-21 21:26:47,622 - lbitcls - INFO - Epoch [1][200/626]	lr: 1.000e-03, eta: 1 day, 1:32:11, time: 1.473, data_time: 0.449, memory: 10283, loss: 1.3465, top-1: 68.2227, top-5: 86.7495
 2021-07-21 21:30:14,855 - lbitcls - INFO - Epoch [1][400/626]	lr: 1.000e-03, eta: 21:40:43, time: 1.036, data_time: 0.024, memory: 10283, loss: 1.3443, top-1: 68.2712, top-5: 86.7048
@@ -267,7 +254,7 @@ Next, the program will output log information with the following format, which c
 
 QQuant provides model analysis API for further experiments. To explore more about the properties of the quantization model and how it differs from the standard model, we could use this script
 
-```shell=
+```shell
 python tools/model_analysis_tool.py \
     ${IMAGE_FILE} \
     ${FLOAT_CONFIG_FILE} \
@@ -280,7 +267,7 @@ python tools/model_analysis_tool.py \
 
 Examples:
 
-```shell=
+```shell
 python tools/model_analysis_tool.py \
     doc/tutorials/test.jpg \
     thirdparty/configs/DSQ/res50/config1_res50_dsq_m1_16_32w32f.py \
