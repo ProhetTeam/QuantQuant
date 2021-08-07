@@ -11,12 +11,12 @@ APOT
 
 DoReFa
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.APOT
+.. automodule:: QuanTransformer.quantrans.quantops.DOREFA
     :members:
 
 DSQ
 ^^^^^^^^^^
-.. automodule:: QuanTransformer.quantrans.quantops.APOT
+.. automodule:: QuanTransformer.quantrans.quantops.DSQ
     :members:
 
 LSQ

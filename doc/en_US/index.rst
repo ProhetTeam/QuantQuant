@@ -17,7 +17,7 @@ Welcome to QuantQuant's documentation!
    :maxdepth: 2
    :caption: Tutorial
    
-   tutorials/Tutorial1-Classification-QAT.md
+   tutorials/Tutorial1:Classification-QAT.md
    tutorials/Tutorial2:Detection-QAT.md
    tutorials/Tutorial3:Self-Define-QAT.md
 

@@ -1,4 +1,4 @@
-# __Tutorial 1 - Classification__
+# __Tutorial 1 : Classification__
 
 QQuant provides multiple quantizers for quantization-aware fine-tuning. This tutorial provides several light demos, which are designed to introduce the overall style of QQuant and make you get started quickly. We assume that the reader has basic concepts of deep learning. 
 
