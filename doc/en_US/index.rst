@@ -26,11 +26,6 @@ Welcome to QuantQuant's documentation!
    :caption: API Reference
    
    api/api.rst
-   
-.. toctree::
-   :caption: Language Switch
-
-   switch_language.md
 
 
 Indices and tables

@@ -1,8 +1,8 @@
-# __Tutorial 1 : Classification__
+# __Tutorial 1: Classification__
 
-QQuant provides multiple quantizers for quantization-aware fine-tuning. This tutorial provides several light demos, which are designed to introduce the overall style of QQuant and make you get started quickly. We assume that the reader has basic concepts of deep learning. 
+QuantQuant provides multiple quantizers for quantization-aware fine-tuning. This tutorial provides several light demos, which are designed to introduce the overall style of QuantQuant and make you get started quickly. We assume that the reader has basic concepts of deep learning. 
 
-QQuant currently supports PyTorch models. 
+QuantQuant currently supports PyTorch models. 
 
 ## __Structure of lowbit classification__
 
@@ -62,7 +62,7 @@ config = mmcv.Config.fromfile(config)
 
 ### __Build quantized model from the configuration file__
 
-Building a network from scratch is usually a tedious process because it consists of several nested layers/modules. When quantifying an existing model, we will not repeat above steps. QQuant provides model transformer which recursively traverse the network structure and replace them with specified quantization layers. In addition to directly using the existing quantification methods, we could also modify them, or customize a new one.
+Building a network from scratch is usually a tedious process because it consists of several nested layers/modules. When quantifying an existing model, we will not repeat above steps. QuantQuant provides model transformer which recursively traverse the network structure and replace them with specified quantization layers. In addition to directly using the existing quantification methods, we could also modify them, or customize a new one.
 
 
 ```python
@@ -252,7 +252,7 @@ Next, the program will output log information with the following format, which c
 
 ### __Analyze quantization performance__
 
-QQuant provides model analysis API for further experiments. To explore more about the properties of the quantization model and how it differs from the standard model, we could use this script
+QuantQuant provides model analysis API for further experiments. To explore more about the properties of the quantization model and how it differs from the standard model, we could use this script
 
 ```shell
 python tools/model_analysis_tool.py \

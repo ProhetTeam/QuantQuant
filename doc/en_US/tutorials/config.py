@@ -56,7 +56,7 @@ data = dict(
         # replace `data/val` with `data/test` for standard test
         type=dataset_type,
         data_prefix= None,
-        ann_file="/data/workspace/dataset/imagenet /imagenet.val.nori.list",
+        ann_file="/data/workspace/dataset/imagenet/imagenet.val.nori.list",
         pipeline=test_pipeline))
 evaluation = dict(interval=2, metric='accuracy')
 
