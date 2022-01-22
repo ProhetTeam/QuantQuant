@@ -54,14 +54,14 @@ What’s more,  we have support to quantize on both classfication and detection 
  
 ## The Structure of QQ 
 
-'''
+```
 ├── ModelAnalysisTools
 ├── QuanTransformer
 ├── QuantMmdetection
 ├── lowbit_classification
 ├── requirements.txt
 └── README.md
-'''
+```
 
 
 
